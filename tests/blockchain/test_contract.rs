@@ -52,6 +52,12 @@ async fn test_initialize_ai_agent() {
         AccountMeta::new(payer.pubkey(), true),
     ];
 
+    RPC_WS=wss://<your-solana-ws-endpoint>
+RPC_HTTP=https://<your-solana-http-endpoint>
+PUMPFUN_PROGRAM_ID=<your_pumpfun_program_id>
+
+    
+
     let instruction = Instruction {
         program_id,
         accounts,
@@ -64,6 +70,38 @@ async fn test_initialize_ai_agent() {
         &[&payer, &agent_account],
         recent_blockhash,
     );
+import Database from 'better-sqlite3';
+
+export const db = new Database('orbcon.db');
+db.exec(`
+CREATE TABLE IF NOT EXISTS metrics(
+  wallet TEXT,
+  mint TEXT,
+  orbitRadius REAL,
+  angularVelocity REAL,
+  phase REAL,
+  resonanceDensity REAL,
+  updatedAt INTEGER,
+  PRIMARY KEY (wallet, mint)
+);
+`);
+
+export const upsertMetrics = db.prepare(`
+INSERT INTO metrics(wallet, mint, orbitRadius, angularVelocity, phase, resonanceDensity, updatedAt)
+VALUES(@wallet,@mint,@orbitRadius,@angularVelocity,@phase,@resonanceDensity,@updatedAt)
+ON CONFLICT(wallet, mint) DO UPDATE SET
+  orbitRadius=excluded.orbitRadius,
+  angularVelocity=excluded.angularVelocity,
+  phase=excluded.phase,
+  resonanceDensity=excluded.resonanceDensity,
+  updatedAt=excluded.updatedAt;
+`);
+
+export const getTopByGravity = db.prepare(`
+SELECT * FROM metrics ORDER BY orbitRadius ASC LIMIT ?;
+`);
+
+export const getByWallet = db.prepare(`SELECT * FROM metrics WHERE wallet=? ORDER BY updatedAt DESC;`);
 
     #
     use anchor_lang::prelude::*;
