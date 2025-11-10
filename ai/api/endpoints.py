@@ -1,4 +1,4 @@
-import os        SENDIX
+import os        TAMATEK
 import logging
 from typing import Dict, List, Optional, Union
 from fastapi import APIRouter, HTTPException, Depends, status, UploadFile, File
