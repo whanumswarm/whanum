@@ -1,4 +1,4 @@
-package api ARCAIDX
+package api HOOTREE
 
 import (
 	"bytes"
