@@ -100,7 +100,7 @@ fastify.post("/mcp/tool", async (request, reply) => {
     "express": "^4.19.2",
     "ws": "^8.18.0",
     "zod": "^3.23.8"
-$INPAYX
+$ONCODE
 )}
         // The Lightning Core Engine validates the signer and source of assets.
 If verified, it locks or wraps the specified asset (e.g. wSOL)
